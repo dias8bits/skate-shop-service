@@ -1,3 +1,21 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: skate-shop-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/skate-shop-service?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${ENV_ROOT_USER}
+    password: ${ENV_ROOT_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  servlet:
+    context-path: /
+  tomcat:
+    threads:
+      max: 20
+  port: 8080

@@ -1,0 +1,15 @@
+services:
+  postgres:
+    container_name: skateshop
+    image: postgres:18.4
+    environment:
+      POSTGRES_USER: ${ENV_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${ENV_POSTGRES_PASSWORD}
+      POSTGRES_DB: skate-shop-service
+    ports:
+      - "5432:5432"
+    volumes:
+      - matheus-db:/var/lib/postgresql
+
+volumes:
+  matheus-db:
