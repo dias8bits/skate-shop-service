@@ -23,11 +23,16 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private User findUserByIdOrElseThrow(UUID id) {
-        return userRepository.findById(id)
+    public User findUserByCpfOrElseThrow(String cpf) {
+        return userRepository.findUserByCpfIgnoreCase(cpf)
                 .orElseThrow(() -> new NotFoundException(
-                        String.format("user with id %s not found", id)
+                        String.format("user with cpf %s not found", cpf)
                 ));
+    }
+
+    public User findUserByIdOrElseThrow(UUID id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("user not found"));
     }
 
     @Transactional
@@ -72,23 +77,25 @@ public class UserService {
             userToUpdate.setCpf(user.getCpf());
         }
 
+        userToUpdate.setId(user.getId());
+
         return userRepository.save(userToUpdate);
     }
 
     @Transactional
-    public void delete(UUID id) {
-        var userToDelete = findUserByIdOrElseThrow(id);
+    public void delete(User user) {
+        var userToDelete = findUserByIdOrElseThrow(user.getId());
         userRepository.delete(userToDelete);
     }
 
-    private void validateUniqueFields (User user) {
+    private void validateUniqueFields(User user) {
         assertThatEmailDoesNotExistOrElseThrow(user.getEmail());
         assertThatCpfDoesNotExistOrElseThrow(user.getCpf());
         assertThatPhoneDoesNotExistOrElseThrow(user.getPhone());
     }
 
 
-    private void validateUniqueFieldsForUpdate (User user) {
+    private void validateUniqueFieldsForUpdate(User user) {
         assertThatEmailDoesNotExistOrElseThrow(user.getEmail(), user.getId());
         assertThatCpfDoesNotExistOrElseThrow(user.getCpf(), user.getId());
         assertThatPhoneDoesNotExistOrElseThrow(user.getPhone(), user.getId());
