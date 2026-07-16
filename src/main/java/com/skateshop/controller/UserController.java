@@ -1,13 +1,17 @@
 package com.skateshop.controller;
 
+import com.skateshop.dto.request.UserPatchRequest;
 import com.skateshop.dto.request.UserPostRequest;
+import com.skateshop.dto.request.UserPutRequest;
 import com.skateshop.dto.response.UserGetResponse;
 import com.skateshop.dto.response.UserPostResponse;
+import com.skateshop.dto.response.UserPutResponse;
 import com.skateshop.mapper.UserMapper;
 import com.skateshop.service.userService.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +30,6 @@ public class UserController {
     private final UserMapper mapper;
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<UserGetResponse>> findById() {
         log.debug("request to list all users");
 
@@ -38,7 +41,6 @@ public class UserController {
     }
 
     @GetMapping("{cpf}")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserGetResponse> findUserByCpf(@PathVariable String cpf) {
         log.debug("request to find user with cpf: '{}'", cpf);
 
@@ -49,8 +51,7 @@ public class UserController {
         return ResponseEntity.ok(userGetResponse);
     }
 
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping()
     public ResponseEntity<UserPostResponse> save(@Valid @RequestBody UserPostRequest request) {
         log.debug("request to save user");
 
@@ -64,9 +65,8 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
-        log.debug("request to delete user");
+        log.debug("request to delete user with id: '{}'", id);
 
         var userToDelete = userService.findUserByIdOrElseThrow(id);
 
@@ -75,16 +75,34 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> update() {
-        return null;
+    @PutMapping("{id}")
+    public ResponseEntity<UserPutResponse> update(@Valid @RequestBody UserPutRequest request,
+                                                  @PathVariable UUID id) {
+        log.debug("request to update user with id: '{}'", id);
+
+        var userToUpdate = mapper.toUser(request);
+        userToUpdate.setId(id);
+
+        var userUpdated = userService.update(userToUpdate);
+
+        var userPutResponse = mapper.toUserPutResponse(userUpdated);
+
+        return ResponseEntity.ok().body(userPutResponse);
     }
 
-    @PatchMapping
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> updateSelectedFields() {
-        return null;
+    @PatchMapping("{id}")
+    public ResponseEntity<UserPutResponse> updateSelectedFields(@Valid @RequestBody UserPatchRequest request,
+                                                     @PathVariable UUID id) {
+        log.debug("request to updateSelectedFields user with id: '{}'", id);
+
+        var userToUpdate = mapper.toUser(request);
+        userToUpdate.setId(id);
+
+        var userUpdated = userService.updateSelectedFields(userToUpdate);
+
+        var userPutResponse = mapper.toUserPutResponse(userUpdated);
+
+        return ResponseEntity.ok().body(userPutResponse);
     }
 
 }

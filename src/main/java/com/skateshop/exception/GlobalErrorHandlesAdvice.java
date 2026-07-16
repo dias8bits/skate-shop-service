@@ -2,8 +2,11 @@ package com.skateshop.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalErrorHandlesAdvice {
@@ -35,5 +38,18 @@ public class GlobalErrorHandlesAdvice {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<ValidationFieldError>> handleMethodArgumentNotValidException (MethodArgumentNotValidException e) {
+
+        List<ValidationFieldError> erros = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(erro -> new ValidationFieldError(erro.getField(), erro.getDefaultMessage()))
+                .toList();
+
+        return ResponseEntity.badRequest().body(erros);
+    }
+
 }
 

@@ -19,3 +19,7 @@ server:
     threads:
       max: 20
   port: 8080
+
+logging:
+  level:
+    com.skateshop: debug
