@@ -45,8 +45,9 @@ public class UserService {
     }
 
     @Transactional
-    public User update(User user) {
-        findUserByIdOrElseThrow(user.getId());
+    public User update(User user, UUID id) {
+        findUserByIdOrElseThrow(id);
+        user.setId(id);
 
         validateUniqueFieldsForUpdate(user);
 
@@ -54,8 +55,8 @@ public class UserService {
     }
 
     @Transactional
-    public User updateSelectedFields(User user) {
-        var userToUpdate = findUserByIdOrElseThrow(user.getId());
+    public User updateSelectedFields(User user, UUID id) {
+        var userToUpdate = findUserByIdOrElseThrow(id);
 
         if (user.getFirstName() != null)
             userToUpdate.setFirstName(user.getFirstName());
@@ -77,8 +78,6 @@ public class UserService {
             assertThatCpfDoesNotExistOrElseThrow(user.getCpf(), user.getId());
             userToUpdate.setCpf(user.getCpf());
         }
-
-        userToUpdate.setId(user.getId());
 
         return userRepository.save(userToUpdate);
     }

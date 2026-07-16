@@ -81,9 +81,8 @@ public class UserController {
         log.debug("request to update user with id: '{}'", id);
 
         var userToUpdate = mapper.toUser(request);
-        userToUpdate.setId(id);
 
-        var userUpdated = userService.update(userToUpdate);
+        var userUpdated = userService.update(userToUpdate, id);
 
         var userPutResponse = mapper.toUserPutResponse(userUpdated);
 
@@ -96,9 +95,8 @@ public class UserController {
         log.debug("request to updateSelectedFields user with id: '{}'", id);
 
         var userToUpdate = mapper.toUser(request);
-        userToUpdate.setId(id);
 
-        var userUpdated = userService.updateSelectedFields(userToUpdate);
+        var userUpdated = userService.updateSelectedFields(userToUpdate, id);
 
         var userPutResponse = mapper.toUserPatchResponse(userUpdated);
 
