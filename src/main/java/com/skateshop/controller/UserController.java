@@ -4,14 +4,14 @@ import com.skateshop.dto.request.UserPatchRequest;
 import com.skateshop.dto.request.UserPostRequest;
 import com.skateshop.dto.request.UserPutRequest;
 import com.skateshop.dto.response.UserGetResponse;
+import com.skateshop.dto.response.UserPatchResponse;
 import com.skateshop.dto.response.UserPostResponse;
 import com.skateshop.dto.response.UserPutResponse;
 import com.skateshop.mapper.UserMapper;
 import com.skateshop.service.userService.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.query.Param;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Slf4j
+@Log4j2
 @RestController
 @RequestMapping("v1/users")
 public class UserController {
@@ -30,10 +30,10 @@ public class UserController {
     private final UserMapper mapper;
 
     @GetMapping()
-    public ResponseEntity<List<UserGetResponse>> findById() {
-        log.debug("request to list all users");
+    public ResponseEntity<List<UserGetResponse>> findAllOrById(@RequestParam(required = false) UUID id) {
+        log.debug("request to list all users, param id: '{}'", id);
 
-        var users = userService.findAll();
+        var users = userService.findAll(id);
 
         var userGetResponseList = mapper.toUserGetResponseList(users);
 
@@ -91,8 +91,8 @@ public class UserController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<UserPutResponse> updateSelectedFields(@Valid @RequestBody UserPatchRequest request,
-                                                     @PathVariable UUID id) {
+    public ResponseEntity<UserPatchResponse> updateSelectedFields(@Valid @RequestBody UserPatchRequest request,
+                                                                  @PathVariable UUID id) {
         log.debug("request to updateSelectedFields user with id: '{}'", id);
 
         var userToUpdate = mapper.toUser(request);
@@ -100,7 +100,7 @@ public class UserController {
 
         var userUpdated = userService.updateSelectedFields(userToUpdate);
 
-        var userPutResponse = mapper.toUserPutResponse(userUpdated);
+        var userPutResponse = mapper.toUserPatchResponse(userUpdated);
 
         return ResponseEntity.ok().body(userPutResponse);
     }

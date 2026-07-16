@@ -5,11 +5,13 @@ import com.skateshop.exception.CpfAlreadyExistsException;
 import com.skateshop.exception.EmailAlreadyExistsException;
 import com.skateshop.exception.NotFoundException;
 import com.skateshop.exception.PhoneAlreadyExistsException;
+import com.skateshop.repository.userRepository.AddressRepository;
 import com.skateshop.repository.userRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,9 +20,10 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll(UUID id) {
+        return id == null ? userRepository.findAll() : Collections.singletonList(findUserByIdOrElseThrow(id));
     }
 
     public User findUserByCpfOrElseThrow(String cpf) {
@@ -54,13 +57,11 @@ public class UserService {
     public User updateSelectedFields(User user) {
         var userToUpdate = findUserByIdOrElseThrow(user.getId());
 
-        if (user.getFirstName() != null) {
+        if (user.getFirstName() != null)
             userToUpdate.setFirstName(user.getFirstName());
-        }
 
-        if (user.getLastName() != null) {
+        if (user.getLastName() != null)
             userToUpdate.setLastName(user.getLastName());
-        }
 
         if (user.getPhone() != null) {
             assertThatPhoneDoesNotExistOrElseThrow(user.getPhone(), user.getId());
