@@ -3,5 +3,10 @@ package com.skateshop.repository.productRepository;
 import com.skateshop.domain.product.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface BrandRepository extends JpaRepository<Brand, Long> {
+
+    Optional<Brand> findBrandByBrandNameIgnoreCase(String name);
+
 }
