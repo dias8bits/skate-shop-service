@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CategoryPostRequest {
+public class SizePostRequest {
 
-    @NotBlank(message = "the field 'categoryName' is required")
-    private String categoryName;
+    @NotBlank(message = "the field 'sizeName' is required")
+    private String sizeName;
 }

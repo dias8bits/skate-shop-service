@@ -35,7 +35,7 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id", nullable = false)
-    private Color brand;
+    private Brand brand;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "color_id", nullable = false)

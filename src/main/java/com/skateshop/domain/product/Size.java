@@ -16,11 +16,11 @@ public class Size {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "size", nullable = false)
-    private String size;
+    @Column(name = "size_name", nullable = false)
+    private String sizeName;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false, unique = true)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
 }

@@ -10,6 +10,6 @@ import lombok.ToString;
 @ToString
 public class BrandPostRequest {
 
-    @NotBlank(message = "the field 'name' is required")
+    @NotBlank(message = "the field 'brandName' is required")
     private String brandName;
 }

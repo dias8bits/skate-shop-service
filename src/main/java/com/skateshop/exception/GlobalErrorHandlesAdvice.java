@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -41,6 +39,13 @@ public class GlobalErrorHandlesAdvice {
 
     @ExceptionHandler
     public ResponseEntity<DefaltErrorMessage> handlePhoneAlreadyExistsException (PhoneAlreadyExistsException e) {
+        var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<DefaltErrorMessage> handleBusinessException (BusinessException e) {
         var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
