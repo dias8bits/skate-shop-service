@@ -1,8 +1,9 @@
 package com.skateshop.service.userService;
 
-
 import com.skateshop.domain.user.Address;
+import com.skateshop.dto.request.AddressPatchRequest;
 import com.skateshop.dto.request.AddressPostRequest;
+import com.skateshop.dto.request.AddressPutRequest;
 import com.skateshop.dto.response.AddressPostResponse;
 import com.skateshop.exception.NotFoundException;
 import com.skateshop.mapper.AddressMapper;
@@ -25,6 +26,19 @@ public class AddressService {
     private final BrasilApiService brasilApiService;
     private final AddressMapper mapper;
 
+    public List<Address> findAll(UUID id) {
+        return id == null ? addressRepository.findAll() : Collections.singletonList(findAddressByIdOrElseThrow(id));
+    }
+
+    public List<Address> findAllAddressByUserId(UUID id) {
+        return addressRepository.findAllByUserId(id);
+    }
+
+    public Address findAddressByIdOrElseThrow(UUID id) {
+        return addressRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("address not found"));
+    }
+
     @Transactional
     public AddressPostResponse save(AddressPostRequest request, UUID userId) {
         var addressToSave = mapper.toAddress(request);
@@ -45,41 +59,41 @@ public class AddressService {
         return mapper.toAddressPostResponse(savedAddress);
     }
 
-    public List<Address> findAll(UUID id) {
-        return id == null ? addressRepository.findAll() : Collections.singletonList(findAddressByIdOrElseThrow(id));
-    }
-
-    public List<Address> findAllAddressByUserId(UUID id) {
-        return addressRepository.findAllByUserId(id);
-    }
-
-    public Address findAddressByIdOrElseThrow(UUID id) {
-        return addressRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("address not found"));
-    }
-
     public void delete (Address address) {
+        findAddressByIdOrElseThrow(address.getId());
         addressRepository.deleteById(address.getId());
     }
 
-    public Address update (Address address) {
-        findAddressByIdOrElseThrow(address.getId());
-        return addressRepository.save(address);
+    @Transactional
+    public Address update(AddressPutRequest request, UUID id) {
+        var addressToUpdate= findAddressByIdOrElseThrow(id);
+
+        var cep = brasilApiService.findCep(request.getCep());
+
+        addressToUpdate.setNumber(request.getNumber());
+        addressToUpdate.setComplement(request.getComplement());
+        addressToUpdate.setCep(request.getCep());
+        addressToUpdate.setStreet(cep.street());
+        addressToUpdate.setNeighborhood(cep.neighborhood());
+        addressToUpdate.setState(cep.state());
+        addressToUpdate.setCity(cep.city());
+
+        var savedAddress = addressRepository.save(addressToUpdate);
+
+        return addressRepository.save(savedAddress);
     }
 
-    public Address updateSelectedFields (Address address) {
-        var addressToUpdate = findAddressByIdOrElseThrow(address.getId());
+    public Address updateSelectedFields (AddressPatchRequest request, UUID id) {
+        var addressToUpdate = findAddressByIdOrElseThrow(id);
 
-        if (address.getCep() != null) 
-            addressToUpdate.setCep(address.getCep());
+        if (request.getCep() != null)
+            addressToUpdate.setCep(request.getCep());
         
-        if (address.getComplement() != null) 
-            addressToUpdate.setComplement(address.getComplement());
+        if (request.getComplement() != null)
+            addressToUpdate.setComplement(request.getComplement());
         
-        if (address.getNumber() != null)
-            addressToUpdate.setNumber(address.getNumber());
-
-        addressToUpdate.setId(address.getId());
+        if (request.getNumber() != null)
+            addressToUpdate.setNumber(request.getNumber());
 
         return addressRepository.save(addressToUpdate);
     }
