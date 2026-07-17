@@ -86,8 +86,10 @@ public class AddressService {
     public Address updateSelectedFields (AddressPatchRequest request, UUID id) {
         var addressToUpdate = findAddressByIdOrElseThrow(id);
 
+        var cep = brasilApiService.findCep(request.getCep()).toString();
+
         if (request.getCep() != null)
-            addressToUpdate.setCep(request.getCep());
+            addressToUpdate.setCep(cep);
         
         if (request.getComplement() != null)
             addressToUpdate.setComplement(request.getComplement());
