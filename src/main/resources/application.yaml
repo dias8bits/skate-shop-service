@@ -9,8 +9,10 @@ spring:
     password: ${ENV_ROOT_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
+  flyway:
+    enabled: true
 
 server:
   servlet:
@@ -23,6 +25,7 @@ server:
 logging:
   level:
     com.skateshop: debug
+
 
 brasil-api:
   base-url: ${BRASIL_API_BASE_URL:https://brasilapi.com.br/api}
