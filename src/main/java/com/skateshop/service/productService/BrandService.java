@@ -1,6 +1,7 @@
 package com.skateshop.service.productService;
 
 import com.skateshop.domain.product.Brand;
+import com.skateshop.exception.BusinessException;
 import com.skateshop.exception.NotFoundException;
 import com.skateshop.repository.productRepository.BrandRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ public class BrandService {
     }
 
     public Brand save(Brand brand) {
+        if (brandRepository.findBrandByBrandNameIgnoreCase(brand.getBrandName()).isPresent())
+            throw new BusinessException(String.format("brand '%s' already exists", brand.getBrandName()));
         return brandRepository.save(brand);
     }
 

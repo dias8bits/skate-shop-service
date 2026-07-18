@@ -1,6 +1,7 @@
 package com.skateshop.service.productService;
 
 import com.skateshop.domain.product.Category;
+import com.skateshop.exception.BusinessException;
 import com.skateshop.exception.NotFoundException;
 import com.skateshop.repository.productRepository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ public class CategoryService {
     }
 
     public Category save(Category category) {
+        if (categoryRepository.findCategoryByCategoryNameIgnoreCase(category.getCategoryName()).isPresent())
+            throw new BusinessException(String.format("category '%s' already exists", category.getCategoryName()));
         return categoryRepository.save(category);
     }
 

@@ -34,7 +34,8 @@ public class SizeService {
         var categoryToSave = categoryService.findCategoryByNameOrElseThrow(categoryName);
 
         if (sizeRepository.existsByCategory_IdAndSizeNameIgnoreCase(categoryToSave.getId(), size.getSizeName())) {
-            throw new BusinessException("size already exists for this category");
+            throw new BusinessException(String
+                    .format("size '%s' already exists for '%s' category", size.getSizeName(), categoryName));
         }
 
         size.setCategory(categoryToSave);

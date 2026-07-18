@@ -1,6 +1,7 @@
 package com.skateshop.service.productService;
 
 import com.skateshop.domain.product.Color;
+import com.skateshop.exception.BusinessException;
 import com.skateshop.exception.NotFoundException;
 import com.skateshop.repository.productRepository.ColorRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ public class ColorService {
     }
 
     public Color save(Color color) {
+        if (colorRepository.findColorByColorNameIgnoreCase(color.getColorName()).isPresent())
+            throw new BusinessException(String.format("color '%s' already exists", color.getColorName()));
         return colorRepository.save(color);
     }
 
