@@ -15,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 @EqualsAndHashCode
+@With
 public class User {
 
     @Id
