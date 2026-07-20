@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@JsonPropertyOrder({"id","userID", "cep", "street", "number", "complement", "neighborhood", "city", "state"})
+@JsonPropertyOrder({"id", "userID", "cep", "street", "number", "complement", "neighborhood", "city", "state"})
 public class AddressPutResponse {
 
     private UUID id;

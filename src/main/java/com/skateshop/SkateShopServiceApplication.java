@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan
 public class SkateShopServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SkateShopServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SkateShopServiceApplication.class, args);
+    }
 
 }

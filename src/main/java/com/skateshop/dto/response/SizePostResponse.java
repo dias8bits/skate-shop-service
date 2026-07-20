@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-@JsonPropertyOrder({"id","sizeName", "categoryName"})
+@JsonPropertyOrder({"id", "sizeName", "categoryName"})
 public class SizePostResponse {
 
     private String sizeName;

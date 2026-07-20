@@ -17,35 +17,35 @@ import java.util.stream.Collectors;
 public class GlobalErrorHandlesAdvice {
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handleNotFoundException (NotFoundException e) {
+    public ResponseEntity<DefaltErrorMessage> handleNotFoundException(NotFoundException e) {
         var error = new DefaltErrorMessage(HttpStatus.NOT_FOUND.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handleEmailAlreadyExistsException (EmailAlreadyExistsException e) {
+    public ResponseEntity<DefaltErrorMessage> handleEmailAlreadyExistsException(EmailAlreadyExistsException e) {
         var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handleCpfAlreadyExistsException (CpfAlreadyExistsException e) {
+    public ResponseEntity<DefaltErrorMessage> handleCpfAlreadyExistsException(CpfAlreadyExistsException e) {
         var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handlePhoneAlreadyExistsException (PhoneAlreadyExistsException e) {
+    public ResponseEntity<DefaltErrorMessage> handlePhoneAlreadyExistsException(PhoneAlreadyExistsException e) {
         var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handleBusinessException (BusinessException e) {
+    public ResponseEntity<DefaltErrorMessage> handleBusinessException(BusinessException e) {
         var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

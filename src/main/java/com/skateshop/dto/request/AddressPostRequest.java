@@ -1,6 +1,5 @@
 package com.skateshop.dto.request;
 
-import com.skateshop.domain.user.User;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
