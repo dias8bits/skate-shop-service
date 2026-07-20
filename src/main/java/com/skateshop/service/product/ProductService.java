@@ -78,7 +78,7 @@ public class ProductService {
         if (product.getColor() != null)
             productToUpdate.setColor(product.getColor());
 
-        if (product.getBrand() != null)
+        if (product.getCategory() != null)
             productToUpdate.setCategory(product.getCategory());
 
         return productRepository.save(productToUpdate);
