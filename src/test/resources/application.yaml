@@ -8,10 +8,10 @@ spring:
     show-sql: true
   properties:
     hibernate:
-      globally_qhoted_identifiers: true
+      globally_quoted_identifiers: true
   flyway:
     enabled: true
-    locations: classpath:db/migratinon-test
+    locations: classpath:db/migration
 
 server:
   error:
