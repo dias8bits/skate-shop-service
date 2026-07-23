@@ -1,0 +1,2 @@
+DELETE FROM addresses WHERE 1=1;
+DELETE FROM users WHERE 1=1;

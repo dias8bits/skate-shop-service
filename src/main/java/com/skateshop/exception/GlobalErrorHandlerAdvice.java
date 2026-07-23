@@ -14,39 +14,39 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class GlobalErrorHandlesAdvice {
+public class GlobalErrorHandlerAdvice {
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handleNotFoundException(NotFoundException e) {
-        var error = new DefaltErrorMessage(HttpStatus.NOT_FOUND.value(), e.getReason());
+    public ResponseEntity<DefaultErrorMessage> handleNotFoundException(NotFoundException e) {
+        var error = new DefaultErrorMessage(HttpStatus.NOT_FOUND.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handleEmailAlreadyExistsException(EmailAlreadyExistsException e) {
-        var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
+    public ResponseEntity<DefaultErrorMessage> handleEmailAlreadyExistsException(EmailAlreadyExistsException e) {
+        var error = new DefaultErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handleCpfAlreadyExistsException(CpfAlreadyExistsException e) {
-        var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
+    public ResponseEntity<DefaultErrorMessage> handleCpfAlreadyExistsException(CpfAlreadyExistsException e) {
+        var error = new DefaultErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handlePhoneAlreadyExistsException(PhoneAlreadyExistsException e) {
-        var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
+    public ResponseEntity<DefaultErrorMessage> handlePhoneAlreadyExistsException(PhoneAlreadyExistsException e) {
+        var error = new DefaultErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler
-    public ResponseEntity<DefaltErrorMessage> handleBusinessException(BusinessException e) {
-        var error = new DefaltErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
+    public ResponseEntity<DefaultErrorMessage> handleBusinessException(BusinessException e) {
+        var error = new DefaultErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getReason());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
